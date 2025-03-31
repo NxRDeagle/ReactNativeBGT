@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BeatGTApi = axios.create({
-  baseURL: process.env.MAIN_BACKEND_URL,
+  baseURL: 'http://10.0.2.2:8000',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -41,6 +41,7 @@ BeatGTApi.interceptors.response.use(
     return Promise.resolve(res.data || res);
   },
   async error => {
+    console.log(error);
     if (error.response?.status === 401) {
       try {
         await AsyncStorage.clear();

@@ -2,16 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Alert } from 'react-native';
 import AppSvg from '../../svg/AppSvg';
 import ReactNativeBiometrics from 'react-native-biometrics';
-import { CreateUser } from '../../services/routes';
+import { AuthUser, CreateUser } from '../../services/routes';
 import { useNavigation } from '@react-navigation/native';
 
-const RegistrationScreen = () => {
+const LoginScreen = () => {
     const navigation = useNavigation();
     const [login, setLogin] = useState('');
     const [pswd, setPswd] = useState('');
     const [pswdVisible, setPswdVisible] = useState(false);
     const [error, setError] = useState('');
-    const [biometric, setBiometric] = useState(null);
     const [isBiometric, setIsBiometric] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -20,7 +19,6 @@ const RegistrationScreen = () => {
         const rnBio = new ReactNativeBiometrics();
         const { available } = await rnBio.isSensorAvailable();
         setIsBiometric(available);
-
     };
 
     //Юс эффект для проверки биометрии
@@ -30,19 +28,31 @@ const RegistrationScreen = () => {
 
     //Функция создания биометрии
     async function handleBio() {
+        setError('');
         const rnBio = new ReactNativeBiometrics();
         setIsLoading(true);
+
         try {
             const { success, signature } = await rnBio.createSignature({
-                promptMessage: 'Настройка биометрии',
+                promptMessage: 'Вход с биометрией',
                 payload: login,
             });
 
-            if (!success) {throw new Error('');}
-            // 2. Запоминаем его
-            setBiometric(signature);
+            if (!success) { throw new Error(''); }
+
+            const data = {
+                login: login,
+                password: pswd,
+                public_key: signature,
+            };
+
+            AuthUser(data)
+                .then(() => navigation.navigate('MainTabs'))
+                .catch(e => setError(e))
+                .finally(() => setIsLoading(false));
+
         } catch (e) {
-            setError('Ошибка создания биометрики');
+            setError('Ошибка в биометрических данных');
         } finally {
             setIsLoading(false);
         }
@@ -54,15 +64,13 @@ const RegistrationScreen = () => {
         const data = {
             login: login,
             password: pswd,
-            public_key: biometric,
+            public_key: '',
         };
         setIsLoading(true);
-        CreateUser(data)
-            .then(() => navigation.navigate('Login'))
+        AuthUser(data)
+            .then(() => navigation.navigate('MainTabs'))
             .catch(e => setError(e))
-            .finally(() => {
-                setIsLoading(false);
-            });
+            .finally(() => setIsLoading(false));
     }
 
     return (
@@ -72,7 +80,7 @@ const RegistrationScreen = () => {
             resizeMode="cover"
         >
             <View style={styles.form}>
-                <Text style={styles.caption}>Регистрация</Text>
+                <Text style={styles.caption}>Авторизация</Text>
                 <View style={styles.inputField}>
                     <TextInput
                         style={styles.input}
@@ -107,18 +115,18 @@ const RegistrationScreen = () => {
                             <View style={styles.buttonBox}>
                                 {
                                     isBiometric && !!login.length &&
-                                    <TouchableOpacity onPress={handleBio} style={[styles.button1, biometric ? styles.activeButton : {}]}>
+                                    <TouchableOpacity onPress={handleBio} style={styles.button1}>
                                         <Text style={styles.button1Text}>Touch/Face ID</Text>
                                     </TouchableOpacity>
                                 }
                                 <TouchableOpacity onPress={handleSubmit} style={styles.button2}>
-                                    <Text style={styles.button2Text}>Зарегистрироваться</Text>
+                                    <Text style={styles.button2Text}>Войти</Text>
                                 </TouchableOpacity>
                             </View>
                         </>
                 }
-                <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-                    <Text>Есть аккаунт ? Войти</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Registration')}>
+                    <Text>Нет аккаунта? Создать</Text>
                 </TouchableOpacity>
             </View>
         </ImageBackground>
@@ -204,4 +212,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default RegistrationScreen;
+export default LoginScreen;

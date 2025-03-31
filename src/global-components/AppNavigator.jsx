@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/home/HomeScreen';
 import AssemblyScreen from '../screens/assembly/AssemblyScreen';
 import RegistrationScreen from '../screens/auth/Registration';
+import LoginScreen from '../screens/auth/Login';
 // import ProfileScreen from './screens/ProfileScreen';
 // import RecommendationsScreen from './screens/RecommendationsScreen';
 // import NotificationsScreen from './screens/NotificationsScreen';
@@ -47,8 +48,8 @@ function TabNavigator() {
       />
       <Tab.Screen
         name="Auth"
-        component={RegistrationScreen}
-        options={{ title: 'Войти' }}
+        component={LoginScreen}
+        options={{ title: 'Вход' }}
       />
       <Tab.Screen
         name="Settings"
@@ -72,6 +73,11 @@ const AppNavigator = () => {
           name="Assembly"
           component={AssemblyScreen}
           options={{ title: 'Сборка' }}
+        />
+        <Stack.Screen
+          name="Login"
+          component={LoginScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Registration"
