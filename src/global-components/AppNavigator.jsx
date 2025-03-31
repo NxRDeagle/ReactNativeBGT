@@ -1,10 +1,11 @@
 import * as React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/home/HomeScreen';
 import AssemblyScreen from '../screens/assembly/AssemblyScreen';
+import RegistrationScreen from '../screens/auth/Registration';
 // import ProfileScreen from './screens/ProfileScreen';
 // import RecommendationsScreen from './screens/RecommendationsScreen';
 // import NotificationsScreen from './screens/NotificationsScreen';
@@ -16,13 +17,13 @@ const Stack = createStackNavigator();
 function TabNavigator() {
   return (
     <Tab.Navigator
-      screenOptions={({route}) => ({
-        tabBarIcon: ({focused, color, size}) => {
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
+          if (route.name === 'Assemblies') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Profile') {
+          } else if (route.name === 'Auth') {
             iconName = focused ? 'person' : 'person-outline';
           } else if (route.name === 'Assemblies') {
             iconName = focused ? 'star' : 'star-outline';
@@ -40,24 +41,19 @@ function TabNavigator() {
         tabBarInactiveTintColor: 'gray',
       })}>
       <Tab.Screen
-        name="Home"
-        component={HomeScreen}
-        options={{title: 'Главная'}}
-      />
-      <Tab.Screen
         name="Assemblies"
         component={HomeScreen}
-        options={{title: 'Сборки'}}
+        options={{ title: 'Сборки' }}
       />
       <Tab.Screen
-        name="Profile"
-        component={HomeScreen}
-        options={{title: 'Профиль'}}
+        name="Auth"
+        component={RegistrationScreen}
+        options={{ title: 'Войти' }}
       />
       <Tab.Screen
         name="Settings"
         component={HomeScreen}
-        options={{title: 'Настройки'}}
+        options={{ title: 'Настройки' }}
       />
     </Tab.Navigator>
   );
@@ -70,12 +66,17 @@ const AppNavigator = () => {
         <Stack.Screen
           name="MainTabs"
           component={TabNavigator}
-          options={{headerShown: false}}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
           name="Assembly"
           component={AssemblyScreen}
-          options={{title: 'Сборка'}}
+          options={{ title: 'Сборка' }}
+        />
+        <Stack.Screen
+          name="Registration"
+          component={RegistrationScreen}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
