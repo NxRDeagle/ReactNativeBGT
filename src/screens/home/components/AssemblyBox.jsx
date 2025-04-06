@@ -5,6 +5,9 @@ import {useNavigation} from '@react-navigation/native';
 import {assembLike} from '../../../service/route';
 import AppSvg from '../../../svg/AppSvg';
 
+const DEFAULT_PC_IMAGE =
+  'https://yandex-images.clstorage.net/u9HEE7417/c8c70dgi5/Rz7_IbOVXzhdk65KbGtKJtn06Z8eUp20Q2zV8ekz-nHaRv_cCqkhYvBFnZeQ5lebfTVanz2gxG2ZjIj1m5oA1CYnsij2nCYkXYf_ZkVbIhaZodnqEgeV0FNxscH4nx-pTtdWONdQ8KZRbYGqxat-rzwFrnd9LJTgYTnYbaevFQFvji_R71nKIFnHy6I4a2aeXaV1Z6IvRQ0X-JhcDGeL-XJDZuCzeKROyUk1-m2bK7c8QWY6tRDkWPUpXLFPB-khzw6zRbtR2lit2_dOWEPiioklFcMqw7XZc8DIgGyzh-3yZ86cPygwpt3ZpdLBowMbuN2KQjX8eLCpAfT5-_MZqduyL7F74aZAdaOL_gS37lLFgV2vMrdhXYtMUGCUw7dhQmu-mNscSM5NbaHenYOHc-BpBsq1lPyUUWlo9SeD-VXT0rd1h72mYD0_q5LEt9IihbVtw56raYXbRJAU4FdzjWb3rkjP7Eyu4TENBkHbT4u0NdbidXAMsE0R4OG3n2kB58bHLe8NRrBl53NegGt6uqmhfcNur-VZO0TUoKjXCylWE3rgE8yIzuVhVYLthyufrE2W6mmUZPzZKZwd4wupDdfqw6FrnYoUoSv3Gjw3WmJ1vRl7tk8VqTd0hFB09_MRDktO3P_41DrhydWqFZM_A2Q1itI9hIC8ZW0Qpe8TabFvxifRgxWK2HXnu0bcf-reFalF66rHHQ1_rFTYfF87ua43ZiSbfFi6JR2pjpUr9yMkQYqSIQQIVI0p3PH7g_ldT-p_xb-V8gipq0OqaFemosF17avCMxXBEwx0KKDPs4neSwowF6hQqrUlSZqBg__34FUyHvF01MhJUYBxA-MpPQd-d-HfBapMDZN3vuArZhYp_QXDlsMViRdc9LAQA3upfmO-oN-cMJK1GZH68ZdT10gZ-uI9fGBUFS1Q3U-z6T2r1sOxA7U6SDkHO3bcW-LWedE5c-qf8blzUOAMdPe4';
+
 export default function AssemblyBox({assemblyInfo}) {
   const navigation = useNavigation();
   const [like, setLike] = useState(false);
@@ -48,7 +51,7 @@ export default function AssemblyBox({assemblyInfo}) {
     <View style={styles.assemblyBox}>
       <View style={styles.logoBox}>
         <Image
-          source={{uri: assemblyInfo.image_url}}
+          source={{uri: assemblyInfo?.image_url ?? DEFAULT_PC_IMAGE}}
           style={styles.assemblyImage}
           resizeMode="cover"
         />

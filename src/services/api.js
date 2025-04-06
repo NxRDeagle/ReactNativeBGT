@@ -2,7 +2,7 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BeatGTApi = axios.create({
-  baseURL: 'http://10.0.2.2:8000',
+  baseURL: 'http://192.168.0.107:8000',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -10,7 +10,7 @@ const BeatGTApi = axios.create({
 
 // Интерцептор запросов
 BeatGTApi.interceptors.request.use(
-  async (config) => {
+  async config => {
     try {
       const token = await AsyncStorage.getItem('jwtToken');
       if (token) {
@@ -21,9 +21,9 @@ BeatGTApi.interceptors.request.use(
       return Promise.reject(error);
     }
   },
-  (error) => {
+  error => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Интерцептор ответа
@@ -49,7 +49,9 @@ BeatGTApi.interceptors.response.use(
         console.error('Ошибка при попытке очистить хранилище:', e);
       }
     }
-    return Promise.reject(error.response?.data?.error || error.response?.data || error.message);
+    return Promise.reject(
+      error.response?.data?.error || error.response?.data || error.message,
+    );
   },
 );
 

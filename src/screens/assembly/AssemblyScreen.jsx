@@ -12,8 +12,7 @@ import {
 import {useNavigation, useRoute} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {assembly} from '../../constants';
-import {GetAssembly, delAssemb} from '../../service/route';
-import {assembliesMockArray} from '../home/HomeScreen';
+import {getAssemblies, delAssemb} from '../../services/routes';
 import AssemblyComponent from './components/AssemblyComponent';
 import LikeBtn from './components/LikeBtn';
 
@@ -38,11 +37,10 @@ export default function AssemblyScreen() {
           setLogin(parsedUser.nickname);
         }
 
-        // !!! TODO    const assemblyInfo = GetAssembly(id);
-        // Находим сборку по ID в моковых данных
-        const foundAssembly = assembliesMockArray.find(
-          assembly => assembly.assembly_id === parseInt(id),
-        );
+        const response = await getAssemblies();
+        const data = response?.data ?? [];
+        const foundAssembly = data.find(item => item.assembly_id === id) ?? [];
+        console.log(`FOUND: ${JSON.stringify(foundAssembly)}`);
 
         if (!foundAssembly) {
           throw new Error('Сборка не найдена');
