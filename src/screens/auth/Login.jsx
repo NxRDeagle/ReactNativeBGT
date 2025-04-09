@@ -4,6 +4,7 @@ import AppSvg from '../../svg/AppSvg';
 import ReactNativeBiometrics from 'react-native-biometrics';
 import { AuthUser, CreateUser } from '../../services/routes';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const LoginScreen = () => {
     const navigation = useNavigation();
@@ -26,6 +27,11 @@ const LoginScreen = () => {
         checkBiometric();
     }, []);
 
+    React.useEffect(() => {
+        const currentRoute = navigation.getState().routes[navigation.getState().index].name;
+        console.log('Current screen:', currentRoute);
+    }, [navigation]);
+
     //Функция создания биометрии
     async function handleBio() {
         setError('');
@@ -47,7 +53,15 @@ const LoginScreen = () => {
             };
 
             AuthUser(data)
-                .then(() => navigation.navigate('MainTabs'))
+                .then(() => {
+                    navigation.reset({
+                        index: 0,
+                        routes: [{ name: 'MainTabs' }],
+                    });
+                })
+                .then(async (res) => {
+                    await AsyncStorage.setItem('user', JSON.stringify(res.data));
+                })
                 .catch(e => setError(e))
                 .finally(() => setIsLoading(false));
 

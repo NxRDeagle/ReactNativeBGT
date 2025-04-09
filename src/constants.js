@@ -272,6 +272,18 @@ export const assembly = [
   },
 ];
 
+//лого для комплектующих
+export const component_logo = {
+  motherboard: 'https://main-cdn.sbermegamarket.ru/big2/hlr-system/1573366415/100023001835b6.jpg',
+  cpu: 'https://i.playground.ru/e/Qx_OWk6_Bq3ZS25C6UKYJA.webp',
+  ram: 'https://img1-327a.kxcdn.com/DataImage.ashx/9806080',
+  gpu: 'https://static.onlinetrade.ru/img/items/m/videokarta_zotac_geforce_rtx_3060_12288mb_twin_edge_oc_zt_a30600h_10m__1824854_3.jpg',
+  cooler: 'https://cdn1.ozone.ru/s3/multimedia-i/6046520946.jpg',
+  power_supply: 'https://www.ixbt.com/power/psu/photos/xilence/xp600-ge/1000/psu_003.jpg',
+  hard_disk: 'https://sun9-71.userapi.com/impg/9p7O9QwUse7iN4Bk4MSJYQZI3gzg5AAfM-rddQ/HcHS1ri1HtM.jpg?size=807x539&quality=96&sign=33c1217cefb1a4a6d937631f5836765d&c_uniq_tag=E0VsLN4j447XA5Bw53j68v8n3zt-54_3pNj0IiaeVkM&type=album',
+  hull: 'https://avatars.mds.yandex.net/get-mpic/5346941/img_id8504153961996386214.jpeg/orig'
+}
+
 //Объект для создания комплектующего
 export const create_component = {
   motherboard: {

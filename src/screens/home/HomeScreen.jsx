@@ -17,7 +17,7 @@ export default function HomeScreen() {
     const getUser = async () => {
       const user = await AsyncStorage.getItem('user');
       if (user) {
-        setNickname(JSON.parse(user)?.nickname);
+        setNickname(JSON.parse(user)?.login);
       }
     };
     getUser();

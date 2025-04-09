@@ -98,7 +98,7 @@ export default function AddComponent({
 
       <TouchableOpacity
         style={styles.createButton}
-        onPress={() => navigation.navigate('CreateComponent', {type})}>
+        onPress={() => navigation.navigate('CreatePcComponent', {type})}>
         <Text style={styles.createButtonText}>Создать компонент</Text>
       </TouchableOpacity>
     </View>
