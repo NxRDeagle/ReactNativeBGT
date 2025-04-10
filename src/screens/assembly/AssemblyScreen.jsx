@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -9,17 +9,18 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {assembly} from '../../constants';
-import {getAssemblies, delAssemb} from '../../services/routes';
+import { assembly } from '../../constants';
+import { delAssemb, GetAssembly } from '../../services/routes';
 import AssemblyComponent from './components/AssemblyComponent';
 import LikeBtn from './components/LikeBtn';
+import userAvatar from '../../img/user_avatar.jpg';
 
 export default function AssemblyScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const {id} = route.params;
+  const { id } = route.params;
 
   const [assemblyInfo, setAssemblyInfo] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -34,37 +35,17 @@ export default function AssemblyScreen() {
         if (user) {
           const parsedUser = JSON.parse(user);
           setUserId(parsedUser.id);
-          setLogin(parsedUser.nickname);
+          setLogin(parsedUser.login);
         }
 
-        const response = await getAssemblies();
-        const data = response?.data ?? [];
-        const foundAssembly = data.find(item => item.assembly_id === id) ?? [];
+        const foundAssembly = await GetAssembly(id);
         console.log(`FOUND: ${JSON.stringify(foundAssembly)}`);
 
         if (!foundAssembly) {
           throw new Error('Сборка не найдена');
         }
 
-        const transformedAssembly = {
-          ...foundAssembly,
-          cpu: foundAssembly.components.find(c => c.type === 'cpu'),
-          gpu: foundAssembly.components.find(c => c.type === 'gpu'),
-          ram: foundAssembly.components.filter(c => c.type === 'ram'),
-          motherboard: foundAssembly.components.find(
-            c => c.type === 'motherboard',
-          ),
-          hull: foundAssembly.components.find(c => c.type === 'hull'),
-          'hard-disk': foundAssembly.components.filter(
-            c => c.type === 'hard-disk',
-          ),
-          'power-supply': foundAssembly.components.find(
-            c => c.type === 'power-supply',
-          ),
-          cooler: foundAssembly.components.find(c => c.type === 'cooler'),
-        };
-
-        setAssemblyInfo(transformedAssembly);
+        setAssemblyInfo(foundAssembly);
       } catch (e) {
         setError(e.message);
         console.error(e);
@@ -106,7 +87,7 @@ export default function AssemblyScreen() {
   };
 
   const goComponent = (id, type) => {
-    navigation.navigate('Component', {id, type});
+    navigation.navigate('Component', { id, type });
   };
 
   if (loading) {
@@ -141,7 +122,7 @@ export default function AssemblyScreen() {
 
       <View style={styles.authorContainer}>
         <Image
-          source={{uri: assemblyInfo.author_avatar}}
+          source={userAvatar}
           style={styles.avatar}
         />
         <Text style={styles.authorName}>{assemblyInfo.author}</Text>
@@ -152,25 +133,25 @@ export default function AssemblyScreen() {
           <React.Fragment key={item.code_name}>
             {Array.isArray(assemblyInfo[item.code_name])
               ? assemblyInfo[item.code_name].map(d => (
-                  <AssemblyComponent
-                    key={`${item.code_name}${d.id}`}
-                    logo={d.logo}
-                    price={d.price}
-                    onPress={() => goComponent(d.id, item.type)}>
-                    {item.note} {d.name}
-                  </AssemblyComponent>
-                ))
+                <AssemblyComponent
+                  key={`${item.code_name}${d.id}`}
+                  logo={d.logo}
+                  price={d.price}
+                  onPress={() => goComponent(d.id, item.type)}>
+                  {item.note} {d.name}
+                </AssemblyComponent>
+              ))
               : assemblyInfo[item.code_name] && (
-                  <AssemblyComponent
-                    key={`${item.code_name}${assemblyInfo[item.code_name].id}`}
-                    logo={assemblyInfo[item.code_name].logo}
-                    price={assemblyInfo[item.code_name].price}
-                    onPress={() =>
-                      goComponent(assemblyInfo[item.code_name].id, item.type)
-                    }>
-                    {item.note} {assemblyInfo[item.code_name].name}
-                  </AssemblyComponent>
-                )}
+                <AssemblyComponent
+                  key={`${item.code_name}${assemblyInfo[item.code_name].id}`}
+                  logo={assemblyInfo[item.code_name].logo}
+                  price={assemblyInfo[item.code_name].price}
+                  onPress={() =>
+                    goComponent(assemblyInfo[item.code_name].id, item.type)
+                  }>
+                  {item.note} {assemblyInfo[item.code_name].name}
+                </AssemblyComponent>
+              )}
           </React.Fragment>
         ))}
 
@@ -186,6 +167,12 @@ export default function AssemblyScreen() {
           </Text>
         </View>
       </View>
+
+      <TouchableOpacity
+        style={styles.createButton}
+        onPress={() => navigation.navigate('AssemblyComments', { id: assemblyInfo.assembly_id })}>
+        <Text style={styles.createButtonText}>Оставить отзыв</Text>
+      </TouchableOpacity>
 
       <View style={styles.footer}>
         <Text style={styles.totalPrice}>Итого: {assemblyInfo.price} Руб.</Text>
@@ -286,5 +273,13 @@ const styles = StyleSheet.create({
   },
   deleteButtonText: {
     color: 'white',
+  },
+  createButton: {
+    marginTop: 10,
+    padding: 10,
+    alignItems: 'center',
+  },
+  createButtonText: {
+    color: '#007bff',
   },
 });

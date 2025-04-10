@@ -25,6 +25,7 @@ export default function AssemblyBox({assemblyInfo}) {
 
   const handleLike = async () => {
     const user = await AsyncStorage.getItem('user');
+    console.log('user - ', user);
     const userId = user ? JSON.parse(user).id : null;
 
     if (!userId) return;

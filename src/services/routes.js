@@ -45,3 +45,11 @@ export function getAddComponents(brand = '', model = '', type) {
 export function addAssembly(data) {
   return BeatGTApi.post('/create_assembly/', data);
 }
+
+export function getAssembComments(id){
+  return BeatGTApi.get(`/comments/?assembly_id=${id}`);
+}
+
+export function createAssembComments(data){
+  return BeatGTApi.post('/create_comments/', data);
+}

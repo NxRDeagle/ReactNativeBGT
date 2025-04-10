@@ -53,14 +53,13 @@ const LoginScreen = () => {
             };
 
             AuthUser(data)
-                .then(() => {
+                .then(async (res) => {
+                    console.log(res)
+                    await AsyncStorage.setItem('user', JSON.stringify(res));
                     navigation.reset({
                         index: 0,
                         routes: [{ name: 'MainTabs' }],
                     });
-                })
-                .then(async (res) => {
-                    await AsyncStorage.setItem('user', JSON.stringify(res.data));
                 })
                 .catch(e => setError(e))
                 .finally(() => setIsLoading(false));
@@ -82,7 +81,14 @@ const LoginScreen = () => {
         };
         setIsLoading(true);
         AuthUser(data)
-            .then(() => navigation.navigate('MainTabs'))
+            .then(async (res) => {
+                console.log(res)
+                await AsyncStorage.setItem('user', JSON.stringify(res));
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'MainTabs' }],
+                });
+            })
             .catch(e => setError(e))
             .finally(() => setIsLoading(false));
     }

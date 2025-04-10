@@ -9,6 +9,7 @@ import RegistrationScreen from '../screens/auth/Registration';
 import LoginScreen from '../screens/auth/Login';
 import CreateAssemblyScreen from '../screens/create_assembly/CreateAssemblyScreen';
 import CreatePcComponent from '../screens/create_pc_component/CreatePcComponent';
+import AssemblyComments from '../screens/assembly_comments/AssemblyComments';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -86,6 +87,11 @@ const AppNavigator = () => {
           name="CreatePcComponent"
           component={CreatePcComponent}
           options={{title: 'Создание компонента'}}
+        />
+        <Stack.Screen
+          name="AssemblyComments"
+          component={AssemblyComments}
+          options={{title: 'Отзывы об сборке'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

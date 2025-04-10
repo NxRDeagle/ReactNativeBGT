@@ -12,9 +12,10 @@ const BeatGTApi = axios.create({
 BeatGTApi.interceptors.request.use(
   async config => {
     try {
-      const token = await AsyncStorage.getItem('jwtToken');
+      const token = await AsyncStorage.getItem('user');
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        const t = JSON.parse(token);
+        config.headers.Authorization = `Bearer ${t.token}`;
       }
       return config;
     } catch (error) {

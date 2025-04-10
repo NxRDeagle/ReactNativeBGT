@@ -14,6 +14,7 @@ export default function FilterBox({activeFilter, onFilterChange}) {
     {key: 'high_price', label: 'По цене -'},
     {key: 'low_like', label: 'По лайкам +'},
     {key: 'high_like', label: 'По лайкам -'},
+    {key: 'my', label: 'Мои'},
   ];
 
   return (
