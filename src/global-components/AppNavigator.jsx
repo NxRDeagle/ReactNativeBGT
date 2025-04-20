@@ -10,6 +10,7 @@ import LoginScreen from '../screens/auth/Login';
 import CreateAssemblyScreen from '../screens/create_assembly/CreateAssemblyScreen';
 import CreatePcComponent from '../screens/create_pc_component/CreatePcComponent';
 import AssemblyComments from '../screens/assembly_comments/AssemblyComments';
+import AboutApp from '../screens/about_app/AboutApp';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +31,9 @@ function TabNavigator() {
               break;
             case 'CreateAssembly':
               iconName = focused ? 'add-circle' : 'add-circle-outline';
+              break;
+            case 'AboutApp':
+              iconName = focused ? 'information-circle' : 'information-circle-outline';
               break;
             default:
               iconName = 'help-outline';
@@ -54,6 +58,11 @@ function TabNavigator() {
         name="Auth"
         component={LoginScreen}
         options={{title: 'Вход'}}
+      />
+      <Tab.Screen
+        name="AboutApp"
+        component={AboutApp}
+        options={{title: 'О приложении'}}
       />
     </Tab.Navigator>
   );
@@ -92,6 +101,11 @@ const AppNavigator = () => {
           name="AssemblyComments"
           component={AssemblyComments}
           options={{title: 'Отзывы об сборке'}}
+        />
+        <Stack.Screen
+          name="AboutApp"
+          component={AboutApp}
+          options={{title: 'О приложении'}}
         />
       </Stack.Navigator>
     </NavigationContainer>

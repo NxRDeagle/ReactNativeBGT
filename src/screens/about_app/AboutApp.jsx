@@ -1,11 +1,4 @@
-// import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-// import { useNavigation, useRoute } from '@react-navigation/native';
-// import Loader from '../../global-components/Loader';
-// import { useState } from 'react';
-// import { create_component, component_logo } from '../../constants';
-// import { postComponent } from '../../services/routes';
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
 import userAvatar from "../../img/user_avatar.jpg";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -31,10 +24,10 @@ export default function AboutApp() {
                 <Text style={styles.welcomeText}>Добро пожаловать, {username}!</Text>
             ) : null}
       
-      <Image 
+      {/* <Image 
         source={userAvatar}
         style={styles.logo}
-      />
+      /> */}
       
       <Text style={styles.title}>BeatGT</Text>
       
