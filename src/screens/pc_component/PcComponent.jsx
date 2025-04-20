@@ -10,12 +10,24 @@ import { PageLoader } from '../../global_components/Loader';
 
 export default function PcComponent() {
 
-    // const { deviceSize } = useContext(AppContext);
     const navigation = useNavigation();
     const route = useRoute();
-    const { infoData, type_component } = route.params;
-    
+    const { infoData, type_component } = route.params || {};
     const [compWindow, setCompWindow] = useState(true);
+
+    if (!infoData || !type_component) {
+        return (
+            <View style={styles.container}>
+                <Text>Данные о компоненте не найдены</Text>
+                <TouchableOpacity 
+                    style={styles.backButton} 
+                    onPress={() => navigation.goBack()}
+                >
+                    <Text style={styles.backButtonText}>Назад</Text>
+                </TouchableOpacity>
+            </View>
+        );
+    }
 
     return (
         <ScrollView style={styles.container}>
@@ -31,11 +43,11 @@ export default function PcComponent() {
                 </View>
 
                 <View style={styles.noteBox}>
-                    {pc_components[type_component].map((item, idx) => (
+                    {pc_components[type_component]?.map((item, idx) => (
                         <View key={idx} style={styles.noteItem}>
                             <Text style={styles.noteLabel}>{item['note']}</Text>
                             <Text style={styles.noteValue}>
-                                {infoData[item['code_name']]}
+                                {infoData[item['code_name']] || 'Не указано'}
                             </Text>
                         </View>
                     ))}

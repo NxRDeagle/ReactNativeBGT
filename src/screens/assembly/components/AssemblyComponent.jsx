@@ -1,7 +1,18 @@
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export default function AssemblyComponent({logo, price, onPress, children}) {
+
+  const navigation = useNavigation();
+  
+  const handleDetailsPress = () => {
+    navigation.navigate('PcComponent', {
+      infoData: componentData,
+      type_component: type
+    });
+  };
+
   return (
     <View style={styles.componentRow}>
       <Image
@@ -12,7 +23,7 @@ export default function AssemblyComponent({logo, price, onPress, children}) {
       <Text style={styles.componentNote}>{children}</Text>
       <View style={styles.componentInfoBox}>
         <Text style={styles.componentPrice}>{price} Руб.</Text>
-        <TouchableOpacity onPress={onPress} style={styles.componentButton}>
+        <TouchableOpacity onPress={handleDetailsPress} style={styles.componentButton}>
           <Text style={styles.buttonText}>Подробнее</Text>
         </TouchableOpacity>
       </View>
