@@ -137,7 +137,8 @@ export default function AssemblyScreen() {
                   key={`${item.code_name}${d.id}`}
                   logo={d.logo}
                   price={d.price}
-                  onPress={() => goComponent(d.id, item.type)}>
+                  componentData={d}
+                  type={item.type}>
                   {item.note} {d.name}
                 </AssemblyComponent>
               ))
@@ -146,9 +147,8 @@ export default function AssemblyScreen() {
                   key={`${item.code_name}${assemblyInfo[item.code_name].id}`}
                   logo={assemblyInfo[item.code_name].logo}
                   price={assemblyInfo[item.code_name].price}
-                  onPress={() =>
-                    goComponent(assemblyInfo[item.code_name].id, item.type)
-                  }>
+                  componentData={assemblyInfo[item.code_name]}
+                  type={item.type}>
                   {item.note} {assemblyInfo[item.code_name].name}
                 </AssemblyComponent>
               )}
